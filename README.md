@@ -13,6 +13,6 @@ The **modeling technique** i decided to use is a secuence diagram
 ## Implementation
 
 ## Tests
-All test cases are implemented in the end of the document
+The input test cases are shown in the code forces problem with its respective output. They are implemented in the end of the document and shown when ran
 
 ## Analysis
