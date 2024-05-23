@@ -60,12 +60,16 @@ def form_pairs(cards, n, trump_suit):
     return None
 
 def validate_and_parse_input(input_text, grammar):
-    parser = nltk.ChartParser(grammar)
-    tokens = word_tokenize(input_text)
+    cards = input_text.split()[2:]  # Exclude the first two elements (number of test cases and rounds)
+    tokens = [char for card in cards for char in card]
+    print("Tokens:", tokens)  # Print out the tokens
+    parser = nltk.RecursiveDescentParser(grammar)
     try:
         for tree in parser.parse(tokens):
+            print("Parse tree:", tree)  # Print out the parsed tree
             return True
-    except ValueError:
+    except ValueError as e:
+        print("Parsing error:", e)  # Print out parsing error if any
         return False
     return False
 
@@ -89,10 +93,10 @@ def main():
         idx += 2*n
 
         # Validate using the defined grammar
-        # input_text = ' '.join([str(n), trump_suit] + cards)
-        # if not validate_and_parse_input(input_text, grammar):
-        #    print("INVALID INPUT FORMAT")
-        #    return
+        input_text = ' '.join([str(n), trump_suit] + cards)
+        if not validate_and_parse_input(input_text, grammar):
+            print("INVALID INPUT FORMAT")
+            return
 
         test_cases.append((n, trump_suit, cards))
 
@@ -105,7 +109,8 @@ if __name__ == "__main__":
     import sys
     from io import StringIO
 
-    test_input = """8
+    test_input = """
+    8
     3
     S
     3C 9S 4C 6D 3S 7S
@@ -133,3 +138,4 @@ if __name__ == "__main__":
     """
     sys.stdin = StringIO(test_input)
     main()
+
