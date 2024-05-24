@@ -3,6 +3,7 @@
 # 23 / 05 / 2024
 # Implementation of Computational methods Project: Card Game - Paradigm E4
 
+# Libraries
 import nltk
 from nltk import CFG
 from nltk.tokenize import word_tokenize
@@ -12,13 +13,14 @@ nltk.download('punkt')
 grammar = CFG.fromstring("""
 S -> ROUNDS
 ROUNDS -> ROUND ROUNDS | ROUND
-ROUND -> CARD BEATS
-BEATS -> CARD
+ROUND -> CARD LOST_TO
+LOST_TO -> CARD
 CARD -> RANK SUIT
 RANK -> '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
 SUIT -> 'C' | 'D' | 'H' | 'S'
 """)
 
+# Function to determine if a card can beat another one
 def can_beat(card1, card2, trump_suit):
     ranks = "23456789"
     rank1, suit1 = card1[0], card1[1]
@@ -29,6 +31,7 @@ def can_beat(card1, card2, trump_suit):
         return True
     return False
 
+# Function to solve the game for multiple test cases
 def solve_card_game(t, test_cases):
     results = []
     for case in test_cases:
@@ -40,6 +43,7 @@ def solve_card_game(t, test_cases):
             results.extend([f"{pair[0]} {pair[1]}" for pair in pairs])
     return results
 
+# Function that recursively forms pairs of cards that can be played against each other in a sequence of rounds.
 def form_pairs(cards, n, trump_suit):
     if n == 0:
         return []
@@ -59,21 +63,26 @@ def form_pairs(cards, n, trump_suit):
                     return [(card2, card1)] + result
     return None
 
+# Function that validates and parses the input text based on a provided grammar.
 def validate_and_parse_input(input_text, grammar):
-    cards = input_text.split()[2:]  # Exclude the first two elements (number of test cases and rounds)
+    cards = input_text.split()[2:]  
     tokens = [char for card in cards for char in card]
-    print("Tokens:", tokens)  # Print out the tokens
+
+    # print("Tokens:", tokens) Pints out the tokens (used for debbuging)
+    
     parser = nltk.RecursiveDescentParser(grammar)
     try:
-        for tree in parser.parse(tokens):
-            print("Parse tree:", tree)  # Print out the parsed tree
+        for tree in parser.parse(tokens): 
+
+            # print("Parse tree:", tree)   Print out the parsed tree (used for debbuging)
+
             return True
     except ValueError as e:
-        print("Parsing error:", e)  # Print out parsing error if any
+        print("Parsing error:", e)
         return False
     return False
 
-# Input handling
+# main (Input handling)
 def main():
     import sys
     input = sys.stdin.read
@@ -92,7 +101,6 @@ def main():
         cards = data[idx:idx + 2*n]
         idx += 2*n
 
-        # Validate using the defined grammar
         input_text = ' '.join([str(n), trump_suit] + cards)
         if not validate_and_parse_input(input_text, grammar):
             print("INVALID INPUT FORMAT")
@@ -104,7 +112,7 @@ def main():
     for result in results:
         print(result)
 
-# Example usage for testing
+# Example usage for testing from the problem
 if __name__ == "__main__":
     import sys
     from io import StringIO
@@ -138,4 +146,3 @@ if __name__ == "__main__":
     """
     sys.stdin = StringIO(test_input)
     main()
-
