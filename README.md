@@ -6,9 +6,11 @@ The solution required must  reconstruct the sequence of rounds played in a card 
 I adapted my solution to this problem by adding the use of a CFG 
 link: https://codeforces.com/problemset/problem/1932/D
 
-The **modeling technique** i decided to use was an l1 parsing
+I modelled my solution with a secuence diagram
 
 ## Model of the Solution
+
+![NFA1](sequence.png)
 
 ## Implementation
 The solution is implemented in Python.
@@ -37,6 +39,18 @@ The first line of a test case contains the integer number 𝑛 (1≤𝑛≤16).
 The second line of a test case contains one character, the trump suit. It is one of "CDHS".
 
 The third line of a test case contains the description of 2𝑛 cards. Each card is described by a two-character string, the first character is the rank of the card, which is one of "23456789", and the second one is the suit of the card, which is one of "CDHS". All cards are different.
+
+Example Flow for a Single Test Case
+
+Input: 3 S 3C 9S 4C 6D 3S 7S
+Validation: Input is tokenized and checked against the CFG.
+If valid, proceed to solve.
+Solve:
+For n=3, try to form pairs such as:
+3C vs 9S (9S beats 3C)
+4C vs 6D (6D beats 4C)
+3S vs 7S (7S beats 3S)
+Form pairs recursively and check each combination.
 
 ## Analysis
 
