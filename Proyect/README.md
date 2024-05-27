@@ -10,7 +10,7 @@ I modelled my solution with a secuence diagram
 
 ## Model of the Solution
 
-![NFA1](sequence.jpeg)
+![NFA1](Proyect/sequence.jpeg)
 
 ## Implementation
 The solution is implemented in Python.
