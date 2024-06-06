@@ -18,7 +18,7 @@ can_beat = lambda card1, card2, trump: (
     (card2[1] == trump and card1[1] != trump)
 )
 
-# Function to solve the game for multiple test cases using functional programming principles
+# Function to solve the game for multiple test cases
 def solve_card_game(test_cases):
     def find_rounds(cards, trump):
         if not cards:
@@ -41,11 +41,12 @@ def solve_card_game(test_cases):
             results.extend([f"{pair[0]} {pair[1]}" for pair in pairs])
     return results
 
-# Function to validate and parse the input text based on a provided grammar
+# Function to validate and parse the input text based on CFG
 def validate_and_parse_input(input_text):
     cards = input_text.split()[2:]  
     tokens = [char for card in cards for char in card]
 
+# CFG implementation
     grammar = CFG.fromstring("""
     S -> ROUNDS
     ROUNDS -> ROUND ROUNDS | ROUND
@@ -95,10 +96,17 @@ def main():
     for result in results:
         print(result)
 
-# Example usage for testing from the problem
+# Test case from code forces
 if __name__ == "__main__":
     import sys
     from io import StringIO
+
+# Test case input Format
+#
+# 1 - total number of game sets
+# 1 - total number of pairs to play
+# S - Trump suit (instant win)
+# 3C 9S - Pair 
 
     test_input = """
     8
@@ -127,5 +135,17 @@ if __name__ == "__main__":
     C
     9C 9S 6H 8C
     """
-    sys.stdin = StringIO(test_input)
+
+    # Test cases implemented additionally
+    test_input2 = """
+    2
+    12 
+    D
+    6C 9D 7D 2D 4S 5D 8H 9D 2D 6S 4C 3C 2D 5D 3H 2H 5S 5S 6D 8S 3S 4D 2H 3D
+    1
+    H
+    2H 2H
+    """
+
+    sys.stdin = StringIO(test_input2)
     main()
