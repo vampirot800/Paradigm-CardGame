@@ -17,7 +17,7 @@ The solution is implemented in Python.
 
 Functional Paradigm
 
-Input handling: The input is read from standard input (stdin) and parsed to extract the number of test cases, the number of rounds in each test case, the trump suit, and the descriptions of the cards.
+Input handling: The input is read and parsed to extract the number of test cases, the number of rounds in each test case, the trump suit, and the descriptions of the cards.
 
 Parsing and Validation: The input text is parsed and validated using a context-free grammar (CFG). The NLTK library is utilized for parsing the input text based on the defined grammar rules. The grammar ensures that the input follows the correct format and syntax required for the card game problem.
 
