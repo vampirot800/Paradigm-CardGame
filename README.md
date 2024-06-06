@@ -99,4 +99,5 @@ IMPOSSIBLE
 
 This problem could have been solved in lots of other ways, for example, using a logic paradigm. Implementing the rules in prolog, was my first try at this, however I began having issues with my program specifically managing states and ensuring the rules for card comparisons were correctly implemented, with this approach, my output would always be "IMPOSSIBLE", and even though this could have been an effective solution to solve the problem, i opted for a Functional Paradigm and implemented a grammar with recursion to make parsing and rule application easier. The results of this decision provided a balance of readability and ease of debugging, resulting in a more efficient solution to the card game problem.
 
-The can_beat function compares two cards to determine if one can beat the other based on the game rules. This operation has a constant time complexity of O(1)
+The can_beat function compares two cards to determine if one can beat the other based on the game rules. This operation has a constant time complexity of O(1).
+While the overall solution leveraged recursion for parsing and rule application, the time complexity remains manageable for typical input sizes.
