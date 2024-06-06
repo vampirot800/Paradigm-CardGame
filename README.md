@@ -15,7 +15,7 @@ I modelled my solution with a secuence diagram
 ## Implementation
 The solution is implemented in Python.
 
-Recursive/Functional Paradigm
+Functional Paradigm
 
 Input handling: The input is read from standard input (stdin) and parsed to extract the number of test cases, the number of rounds in each test case, the trump suit, and the descriptions of the cards.
 
@@ -56,7 +56,7 @@ Form pairs recursively and check each combination.
 
 This problem could have been solved in lots of other ways, for example, using lambda calculus, which was my first try at this, however i had issues parsing the cards so in the end i decided to implement a Grammar and recursion to make parsing easier. 
 
-In my research, i realized the allegedly most effective way to solve this problem was called a greedy paradigm, which i didn't fully understand, so i solved it with knowledge gained from class.
+In my research, i realized the allegedly most effective way to solve this problem was called a greedy paradigm, which i didn't fully understand, I decided to solve the problem with a very effective solution using Functional Pardigm..
 
 The validate_and_parse_input function tokenizes the input text and parses it using the defined grammar. The time complexity of tokenizing the input text is O(N), where N is the length of the input text. Parsing the tokens using the Recursive Descent Parser has a worst-case time complexity of O(2^N), where N is the number of tokens in the input. 
 

@@ -8,81 +8,64 @@ import nltk
 from nltk import CFG
 from nltk.tokenize import word_tokenize
 nltk.download('punkt')
+from itertools import permutations
 
-# Define the context-free grammar for the card game
-grammar = CFG.fromstring("""
-S -> ROUNDS
-ROUNDS -> ROUND ROUNDS | ROUND
-ROUND -> CARD LOST_TO
-LOST_TO -> CARD
-CARD -> RANK SUIT
-RANK -> '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
-SUIT -> 'C' | 'D' | 'H' | 'S'
-""")
+# Lambda functions for comparison
+rank_order = "23456789"
+rank_index = lambda rank: rank_order.index(rank)
+can_beat = lambda card1, card2, trump: (
+    (card1[1] == card2[1] and rank_index(card2[0]) > rank_index(card1[0])) or
+    (card2[1] == trump and card1[1] != trump)
+)
 
-# Function to determine if a card can beat another one
-def can_beat(card1, card2, trump_suit):
-    ranks = "23456789"
-    rank1, suit1 = card1[0], card1[1]
-    rank2, suit2 = card2[0], card2[1]
-    if suit1 == suit2 and ranks.index(rank2) > ranks.index(rank1):
-        return True
-    if suit2 == trump_suit and suit1 != trump_suit:
-        return True
-    return False
+# Function to solve the game for multiple test cases using functional programming principles
+def solve_card_game(test_cases):
+    def find_rounds(cards, trump):
+        if not cards:
+            return []
+        for i, j in permutations(range(len(cards)), 2):
+            card1, card2 = cards[i], cards[j]
+            if can_beat(card1, card2, trump):
+                remaining_cards = [card for k, card in enumerate(cards) if k not in {i, j}]
+                result = find_rounds(remaining_cards, trump)
+                if result is not None:
+                    return [(card1, card2)] + result
+        return None
 
-# Function to solve the game for multiple test cases
-def solve_card_game(t, test_cases):
     results = []
-    for case in test_cases:
-        n, trump_suit, cards = case
-        pairs = form_pairs(cards, n, trump_suit)
+    for n, trump_suit, cards in test_cases:
+        pairs = find_rounds(cards, trump_suit)
         if pairs is None:
             results.append("IMPOSSIBLE")
         else:
             results.extend([f"{pair[0]} {pair[1]}" for pair in pairs])
     return results
 
-# Function that recursively forms pairs of cards that can be played against each other in a sequence of rounds.
-def form_pairs(cards, n, trump_suit):
-    if n == 0:
-        return []
-    for i in range(len(cards)):
-        for j in range(i + 1, len(cards)):
-            card1 = cards[i]
-            card2 = cards[j]
-            if can_beat(card1, card2, trump_suit):
-                remaining_cards = cards[:i] + cards[i+1:j] + cards[j+1:]
-                result = form_pairs(remaining_cards, n - 1, trump_suit)
-                if result is not None:
-                    return [(card1, card2)] + result
-            elif can_beat(card2, card1, trump_suit):
-                remaining_cards = cards[:i] + cards[i+1:j] + cards[j+1:]
-                result = form_pairs(remaining_cards, n - 1, trump_suit)
-                if result is not None:
-                    return [(card2, card1)] + result
-    return None
-
-# Function that validates and parses the input text based on a provided grammar.
-def validate_and_parse_input(input_text, grammar):
+# Function to validate and parse the input text based on a provided grammar
+def validate_and_parse_input(input_text):
     cards = input_text.split()[2:]  
     tokens = [char for card in cards for char in card]
 
-    # print("Tokens:", tokens) Pints out the tokens (used for debbuging)
-    
+    grammar = CFG.fromstring("""
+    S -> ROUNDS
+    ROUNDS -> ROUND ROUNDS | ROUND
+    ROUND -> CARD LOST_TO
+    LOST_TO -> CARD
+    CARD -> RANK SUIT
+    RANK -> '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+    SUIT -> 'C' | 'D' | 'H' | 'S'
+    """)
+
     parser = nltk.RecursiveDescentParser(grammar)
     try:
-        for tree in parser.parse(tokens): 
-
-            # print("Parse tree:", tree)   Print out the parsed tree (used for debbuging)
-
+        for tree in parser.parse(tokens):
             return True
     except ValueError as e:
         print("Parsing error:", e)
         return False
     return False
 
-# main (Input handling)
+# Main function (Input handling)
 def main():
     import sys
     input = sys.stdin.read
@@ -98,17 +81,17 @@ def main():
         idx += 1
         trump_suit = data[idx]
         idx += 1
-        cards = data[idx:idx + 2*n]
-        idx += 2*n
+        cards = data[idx:idx + 2 * n]
+        idx += 2 * n
 
         input_text = ' '.join([str(n), trump_suit] + cards)
-        if not validate_and_parse_input(input_text, grammar):
+        if not validate_and_parse_input(input_text):
             print("INVALID INPUT FORMAT")
             return
 
         test_cases.append((n, trump_suit, cards))
 
-    results = solve_card_game(t, test_cases)
+    results = solve_card_game(test_cases)
     for result in results:
         print(result)
 
