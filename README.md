@@ -21,12 +21,15 @@ Input handling: The input is read from standard input (stdin) and parsed to extr
 
 Parsing and Validation: The input text is parsed and validated using a context-free grammar (CFG). The NLTK library is utilized for parsing the input text based on the defined grammar rules. The grammar ensures that the input follows the correct format and syntax required for the card game problem.
 
-Card Comparison: The implementation defines rules for comparing cards to determine if one card can beat another. Cards are compared based on their ranks and suits, considering the trump suit if applicable.
+The implementation defines rules for comparing cards using lambda functions to determine if one card can beat another. Cards are compared based on their ranks and suits, considering the trump suit if applicable.
 
 Recursive Pair Formation: A recursive algorithm is used to form pairs of cards for each round of the game. Starting with all available cards, the algorithm recursively selects pairs of cards that meet the game rules until the required number of rounds is reached.
 
+function find_rounds adheres to functional programming principles by avoiding side effects and working with immutable data.
+
 Result Generation: The implementation generates the output based on the formed pairs of cards. If a valid solution is found, the pairs of cards for each round are printed. Otherwise, "IMPOSSIBLE" is printed to indicate that no valid solution exists.
 
+Functions such as can_beat, find_rounds, and solve_card_game are pure functions.
 
 ## Tests
 
@@ -50,6 +53,9 @@ For n=3, try to form pairs such as:
 3C vs 9S (9S beats 3C)
 4C vs 6D (6D beats 4C)
 3S vs 7S (7S beats 3S)
+
+*pairs are formed in order that the right card wins against the left card*
+
 Form pairs recursively and check each combination.
 
 ## Analysis
