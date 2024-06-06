@@ -3,7 +3,7 @@
 ## Description
 I chose to solve a problem involving a card game from codeforces (1400) 
 The solution required must  reconstruct the sequence of rounds played in a card game based on a given set of rules. Each round involves two players playing a card, with the second player needing to beat the card played by the first.
-I adapted my solution to this problem by adding the use of a CFG 
+I adapted my solution to this problem by adding the use of a CFG and lambda functions
 link: https://codeforces.com/problemset/problem/1932/D
 
 I modelled my solution with a sequence diagram
@@ -25,11 +25,7 @@ The implementation defines rules for comparing cards using lambda functions to d
 
 Recursive Pair Formation: A recursive algorithm is used to form pairs of cards for each round of the game. Starting with all available cards, the algorithm recursively selects pairs of cards that meet the game rules until the required number of rounds is reached.
 
-function find_rounds adheres to functional programming principles by avoiding side effects and working with immutable data.
-
 Result Generation: The implementation generates the output based on the formed pairs of cards. If a valid solution is found, the pairs of cards for each round are printed. Otherwise, "IMPOSSIBLE" is printed to indicate that no valid solution exists.
-
-Functions such as can_beat, find_rounds, and solve_card_game are pure functions.
 
 ## Tests
 
@@ -54,18 +50,53 @@ For n=3, try to form pairs such as:
 4C vs 6D (6D beats 4C)
 3S vs 7S (7S beats 3S)
 
-*pairs are formed in order that the right card wins against the left card*
+*pairs are formed so that the right card wins against the left card*
+Test cases outputs:
+```
+3C 9S
+4C 3S
+6D 7S
+IMPOSSIBLE
+IMPOSSIBLE
+3S 7S
+9S 9H
+9H 9S
+IMPOSSIBLE
+9S 9C
+6H 8C
+```
 
-Form pairs recursively and check each combination.
+I implemented additional test cases to prove the functionality of the program:
+```
+test_input2 = """
+    2
+    12 
+    D
+    6C 9D 7D 2D 4S 5D 8H 9D 2D 6S 4C 3C 2D 5D 3H 2H 5S 5S 6D 8S 3S 4D 2H 3D
+    1
+    H
+    2H 2H
+    """
+```
+Output Proving Fucntionality:
+```
+6C 9D
+7D 9D
+2D 5D
+4S 2D
+8H 2D
+6S 5D
+4C 6D
+3C 4D
+2H 3H
+5S 8S
+3S 5S
+2H 3D
+IMPOSSIBLE
+```
 
 ## Analysis
 
-This problem could have been solved in lots of other ways, for example, using lambda calculus, which was my first try at this, however i had issues parsing the cards so in the end i decided to implement a Grammar and recursion to make parsing easier. 
-
-In my research, i realized the allegedly most effective way to solve this problem was called a greedy paradigm, which i didn't fully understand, I decided to solve the problem with a very effective solution using Functional Pardigm..
-
-The validate_and_parse_input function tokenizes the input text and parses it using the defined grammar. The time complexity of tokenizing the input text is O(N), where N is the length of the input text. Parsing the tokens using the Recursive Descent Parser has a worst-case time complexity of O(2^N), where N is the number of tokens in the input. 
-
-The solve_card_game function iterates over each test case and calls the form_pairs function to generate pairs of cards. For each pair of cards, it checks if one card can beat the other based on the game rules. The form_pairs function recursively generates all possible pairs of cards, resulting in a combinatorial explosion. As a result, the time complexity of this part of the code is exponential, particularly when the number of cards (2N) is large.
+This problem could have been solved in lots of other ways, for example, using a logic paradigm. Implementing the rules in prolog, was my first try at this, however I began having issues with my program specifically managing states and ensuring the rules for card comparisons were correctly implemented, with this approach, my output would always be "IMPOSSIBLE", and even though this could have been an effective solution to solve the problem, i opted for a Functional Paradigm and implemented a grammar with recursion to make parsing and rule application easier. The results of this decision provided a balance of readability and ease of debugging, resulting in a more efficient solution to the card game problem.
 
 The can_beat function compares two cards to determine if one can beat the other based on the game rules. This operation has a constant time complexity of O(1)
