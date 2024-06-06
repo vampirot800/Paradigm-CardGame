@@ -6,10 +6,10 @@ The solution required must  reconstruct the sequence of rounds played in a card 
 I adapted my solution to this problem by adding the use of a CFG 
 link: https://codeforces.com/problemset/problem/1932/D
 
-I modelled my solution with a secuence diagram
+I modelled my solution with a sequence diagram
 
 ## Model of the Solution
-
+This sequence diagram shows how the program works :
 ![NFA1](sequence.jpeg)
 
 ## Implementation
